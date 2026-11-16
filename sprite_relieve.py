@@ -30,6 +30,7 @@ class ReliefGenerator(nn.Module):
         self.illustrated=False
         self.expressive=False
         self.posed=False
+        self.show_limbs=False
         self.anatomy=False
         if lineage:
             self.register_buffer("topo",torch.full((len(TYPES),len(TYPES),8),1/8))
@@ -141,6 +142,10 @@ class ReliefGenerator(nn.Module):
             reach=.21+.22*torch.special.ndtr(z[:,47:48])
             head=head*(1+.43*stride)
             yaw=yaw+stride*torch.cat([.44+.16*v(11),-.42-.12*v(11)],1)
+        if self.show_limbs:
+            # Keep the shoulders and hip readable when the sampled head is large.
+            head=torch.minimum(head,(.55*w+.48*h)*(.91+.22*v(4)))
+            hy=hy-.07*(bird+biped+quad+dragon)
         co,si=yaw.cos(),yaw.sin()
         coords=self.axis*(.84 if self.engraved else .90 if self.lineage else 1.)
         deform=F.interpolate(self.displace(cond).reshape(n,2,5,5).tanh(),(64,64),mode="bicubic",align_corners=False)*.048
@@ -208,6 +213,8 @@ class ReliefGenerator(nn.Module):
                 lx=side*w*(.65+.20*v(17))
                 lz=end*d*.67
                 ly=by+h*(.85+.3*v(18))+(.14+.13*v(19))*(1-.58*bug)+gait
+                if self.show_limbs:
+                    ly=ly+(.08+.15*v(19))*(bird+biped+quad+dragon)
                 exists=(quad+bug+dragon+shell) if end==-1 else (quad+bug+dragon+shell+bird+biped)
                 if self.prisma:
                     exists=exists*(1-spirit)*(1-.55*aquatic)

@@ -1,0 +1,315 @@
+{
+  "semillas_visibles": [
+    41001,
+    41002,
+    41003,
+    41004
+  ],
+  "semillas_medicion": [
+    42001,
+    42002,
+    42003,
+    42004,
+    42005,
+    42006,
+    42007,
+    42008
+  ],
+  "condiciones_con_ambas_vistas": 171,
+  "por_tipo": {
+    "water": {
+      "Ficha": {
+        "distancia_silueta": 0.4639,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.3806,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.5011,
+        "pares_distintos": 8
+      }
+    },
+    "dragon": {
+      "Ficha": {
+        "distancia_silueta": 0.4334,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.3978,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.4569,
+        "pares_distintos": 8
+      }
+    },
+    "fighting": {
+      "Ficha": {
+        "distancia_silueta": 0.3329,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.3097,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.4188,
+        "pares_distintos": 8
+      }
+    },
+    "fire": {
+      "Ficha": {
+        "distancia_silueta": 0.47,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.2942,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.4837,
+        "pares_distintos": 8
+      }
+    },
+    "electric": {
+      "Ficha": {
+        "distancia_silueta": 0.504,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.4334,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.578,
+        "pares_distintos": 8
+      }
+    },
+    "ghost": {
+      "Ficha": {
+        "distancia_silueta": 0.4281,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.4281,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.4784,
+        "pares_distintos": 8
+      }
+    },
+    "bug+poison": {
+      "Ficha": {
+        "distancia_silueta": 0.4703,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.3911,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.3936,
+        "pares_distintos": 8
+      }
+    },
+    "water+dragon": {
+      "Ficha": {
+        "distancia_silueta": 0.5368,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.4176,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.533,
+        "pares_distintos": 8
+      }
+    },
+    "normal": {
+      "Ficha": {
+        "distancia_silueta": 0.44,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.3116,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.4981,
+        "pares_distintos": 8
+      }
+    },
+    "flying": {
+      "Ficha": {
+        "distancia_silueta": 0.3957,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.3401,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.446,
+        "pares_distintos": 8
+      }
+    },
+    "poison": {
+      "Ficha": {
+        "distancia_silueta": 0.4358,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.4342,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.4827,
+        "pares_distintos": 8
+      }
+    },
+    "ground": {
+      "Ficha": {
+        "distancia_silueta": 0.4009,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.3675,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.499,
+        "pares_distintos": 8
+      }
+    },
+    "rock": {
+      "Ficha": {
+        "distancia_silueta": 0.4517,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.293,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.4035,
+        "pares_distintos": 8
+      }
+    },
+    "bug": {
+      "Ficha": {
+        "distancia_silueta": 0.4634,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.3989,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.4652,
+        "pares_distintos": 8
+      }
+    },
+    "steel": {
+      "Ficha": {
+        "distancia_silueta": 0.442,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.3678,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.4907,
+        "pares_distintos": 8
+      }
+    },
+    "grass": {
+      "Ficha": {
+        "distancia_silueta": 0.3894,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.3593,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.458,
+        "pares_distintos": 8
+      }
+    },
+    "psychic": {
+      "Ficha": {
+        "distancia_silueta": 0.4474,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.4647,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.4662,
+        "pares_distintos": 8
+      }
+    },
+    "ice": {
+      "Ficha": {
+        "distancia_silueta": 0.4272,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.3507,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.4655,
+        "pares_distintos": 8
+      }
+    },
+    "dark": {
+      "Ficha": {
+        "distancia_silueta": 0.367,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.3493,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.4364,
+        "pares_distintos": 8
+      }
+    },
+    "fairy": {
+      "Ficha": {
+        "distancia_silueta": 0.3684,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.2336,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.4406,
+        "pares_distintos": 8
+      }
+    },
+    "ghost+psychic": {
+      "Ficha": {
+        "distancia_silueta": 0.4425,
+        "pares_distintos": 8
+      },
+      "Cuerpos": {
+        "distancia_silueta": 0.4186,
+        "pares_distintos": 8
+      },
+      "Ficha diversa": {
+        "distancia_silueta": 0.3902,
+        "pares_distintos": 8
+      }
+    }
+  }
+}

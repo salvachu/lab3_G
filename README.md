@@ -1,8 +1,8 @@
 # Laboratorio de sprites
 
-Elige uno o dos tipos y una semilla. La interfaz genera una criatura en dos vistas de 96 × 96 píxeles y permite descargar cada PNG. Cambiar la semilla produce otra muestra. Cambiar el modelo conservando los controles permite compararlos.
+Elige uno o dos tipos y pulsa **Generar criatura**. Cada clic sortea una semilla y muestra dos vistas descargables de 96 × 96 píxeles. Marca **Fijar semilla para comparar** si quieres recuperar una criatura o cambiar de modelo con la misma semilla. Escribir una semilla o seleccionar una criatura del historial también la fija. Para recuperar el ejemplar espectral de la sesión, elige Trazo, Fantasma y Psíquico y escribe 318071.
 
-![Comparación con GPT a resolución de sprite](estructura/trazo/comparacion.png)
+![Cuatro semillas por tipo en Ficha diversa](estructura/diversa/semillas.png)
 
 ## Abrir en Linux
 
@@ -22,11 +22,15 @@ Abre [la interfaz local](http://127.0.0.1:7860) y mantén la terminal abierta. P
 
 ## Modelos
 
+**Ficha diversa** añade un generador de anatomía por flujo condicional, entrenado durante 2.600 pasos con 11.653 pares de sprites de 923 especies de la partición de entrenamiento. A partir de los tipos y el ruido muestrea conjuntamente una de ocho familias, el perfil de ambas vistas, proporciones, pigmento y un mapa de luminosidad para cada lado. El dibujo aún depende de las familias del laboratorio y usa el acabado adversarial de Ficha. Bicho/Veneno conserva los cuerpos de insecto. Agua/Dragón combina los cuerpos acuáticos con familias de Ficha. Fantasma puro alterna entre figuras espectrales y animales, y Fantasma/Psíquico usa el acabado de Trazo. Se muestran cuatro semillas consecutivas por tipo. El benchmark también mide ocho semillas independientes. La diferencia de silueta mide variación, no calidad artística.
+
+[Comparar con reales y GPT](estructura/diversa/comparacion.png) · [Fantasma/Psíquico en cinco semillas](estructura/diversa/fantasma_psiquico.png) · [Medidas por tipo](estructura/diversa/medidas.json)
+
 **Ficha**, seleccionado al abrir, usa las proporciones y colores medidos en sprites de entrenamiento. Para Fantasma puro incorpora mantos, faroles y máscaras. **Cuerpos** es un experimento con nuevos planes corporales para los otros 17 tipos y combinaciones de tipos. Se partió de Ficha a 1.200 pasos y se entrenó el acabado hasta los 2.000. Los planes se comparten entre tipos compatibles. La semilla, el tipo y la ficha determinan qué se dibuja y qué rasgos comparten ambas vistas.
 
 Ficha y Cuerpos son híbridos. El código dibuja la anatomía inicial y el perfil aprendido ajusta la silueta. El acabado neuronal se entrena contra un discriminador condicionado por tipo y ficha y actúa sobre el color dentro de la figura.
 
-**Trazo** parte de Cuerpos. Su red adicional predice color y máscara para ambas vistas a 96 px, condicionada por tipos y entrenada con 800 pasos de reconstrucción y aprendizaje adversarial. Puede cambiar el borde del boceto. En los sprites de especies apartadas mejoró el solapamiento de silueta tras deteriorar las imágenes de los 18 tipos. Esta prueba mide restauración. Para juzgar la generación libre se incluyen seis semillas fijas por condición y los checkpoints se pueden comparar desde la interfaz. Los pesos de las tres variantes están incluidos en `pesos/`.
+**Trazo** parte de Cuerpos. Su red adicional predice color y máscara para ambas vistas a 96 px, condicionada por tipos y entrenada con 800 pasos de reconstrucción y aprendizaje adversarial. Puede cambiar el borde del boceto. En los sprites de especies apartadas mejoró el solapamiento de silueta tras deteriorar las imágenes de los 18 tipos. Esta prueba mide restauración. Para juzgar la generación libre se incluyen seis semillas fijas por condición y los checkpoints se pueden comparar desde la interfaz. Los pesos de las cuatro variantes están incluidos en `pesos/`.
 
 [Comparación de ocho tipos](estructura/trazo/comparacion.png) · [Insecto hoja](estructura/trazo/insecto_hoja.png) · [Seis primeros tipos](estructura/trazo/tipos_1.png) · [Seis siguientes](estructura/trazo/tipos_2.png) · [Seis últimos](estructura/trazo/tipos_3.png) · [Medidas por tipo](estructura/trazo/validacion.csv)
 
@@ -48,3 +52,5 @@ python train_ficha.py --run runs/ficha_todos --steps 2200
 ```
 
 El checkpoint de entrenamiento conserva los optimizadores y el discriminador. La preparación verifica los datos y la partición por especie antes de retomar.
+
+Para entrenar o reanudar el generador de anatomía con la colección preparada y las asignaciones de familia de TRAIN incluidas, ejecuta `python train_diversa.py --steps 2600`. Guarda el estado en `runs/diversa/checkpoint.pt` y exporta los pesos de inferencia a `pesos/diversa.pth`. Para repetir sus láminas usa `python evaluar_diversa.py`.

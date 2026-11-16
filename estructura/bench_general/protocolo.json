@@ -1,0 +1,352 @@
+{
+  "semillas": [
+    96553,
+    121211,
+    121212
+  ],
+  "referencias": {
+    "normal": [
+      [
+        "0604067dcc2eadbad553efd5",
+        "val"
+      ],
+      [
+        "078351ad7c10252c250769d9",
+        "val"
+      ],
+      [
+        "0b85ec9613047d77e3345060",
+        "val"
+      ]
+    ],
+    "fighting": [
+      [
+        "0882e67829d4bdd2dc934811",
+        "val"
+      ],
+      [
+        "6169839629403d5a85033b69",
+        "val"
+      ],
+      [
+        "00d85996e63a44ac726d74a8",
+        "train"
+      ]
+    ],
+    "flying": [
+      [
+        "064a7d3c92ad0b99ee8bd7fa",
+        "train"
+      ],
+      [
+        "20fbae352dbe93c9bf22e9d0",
+        "train"
+      ],
+      [
+        "2779098af6c56497190d5d73",
+        "train"
+      ]
+    ],
+    "poison": [
+      [
+        "00f3e8bec9014172e542df18",
+        "train"
+      ],
+      [
+        "0264d40314bae0d8bac02fa1",
+        "train"
+      ],
+      [
+        "038c62a5005e60039bfe6b93",
+        "train"
+      ]
+    ],
+    "ground": [
+      [
+        "7f90951b0529274a3f8cba73",
+        "val"
+      ],
+      [
+        "01e37f5d33ead31252bba3af",
+        "train"
+      ],
+      [
+        "027e7c27985534bf1b065649",
+        "train"
+      ]
+    ],
+    "rock": [
+      [
+        "1f9c7fc27aecc538cb113bcc",
+        "val"
+      ],
+      [
+        "44d88dcecbba3fa185420d10",
+        "val"
+      ],
+      [
+        "038e1885103630f168ad6b3d",
+        "train"
+      ]
+    ],
+    "bug": [
+      [
+        "09199daa27d245e589e39eb8",
+        "val"
+      ],
+      [
+        "18a5c5fbd15d8d5a2877d36e",
+        "val"
+      ],
+      [
+        "3e6facba9fb4d1b0d243c695",
+        "val"
+      ]
+    ],
+    "ghost": [
+      [
+        "00d63ebfc15ef7ce445bacaa",
+        "train"
+      ],
+      [
+        "033f5ff0312a886ae703f4f2",
+        "train"
+      ],
+      [
+        "0b99704138f2196fe0bd93f7",
+        "train"
+      ]
+    ],
+    "steel": [
+      [
+        "53173a8db9367d45c6bfdbb1",
+        "val"
+      ],
+      [
+        "8055bafc822c2dbace06c33f",
+        "val"
+      ],
+      [
+        "04e58e68a424e743c76fbcc9",
+        "train"
+      ]
+    ],
+    "fire": [
+      [
+        "07689b28a0091108a6574277",
+        "val"
+      ],
+      [
+        "17bffeb274d8bae12fd50678",
+        "val"
+      ],
+      [
+        "0004131dc2e9a7c249316678",
+        "train"
+      ]
+    ],
+    "water": [
+      [
+        "00e7ad5134f25adc3aa76b31",
+        "val"
+      ],
+      [
+        "024253cab63234091d986664",
+        "val"
+      ],
+      [
+        "038dcfe2436214d7ca844ade",
+        "val"
+      ]
+    ],
+    "grass": [
+      [
+        "1f6300fc5b8a259ac5141a09",
+        "val"
+      ],
+      [
+        "008b4af9504bb940bf73ab13",
+        "train"
+      ],
+      [
+        "01645fee12585cad28aa0073",
+        "train"
+      ]
+    ],
+    "electric": [
+      [
+        "01b447179e7dc95ed0b11255",
+        "val"
+      ],
+      [
+        "000c88abad9a4416788a6b78",
+        "train"
+      ],
+      [
+        "0057c5d16a3954a9fa2f69d7",
+        "train"
+      ]
+    ],
+    "psychic": [
+      [
+        "00166d0bbfc5e26072de55d1",
+        "val"
+      ],
+      [
+        "039fcb6c603b8a9cd032ece0",
+        "val"
+      ],
+      [
+        "0623e7a886b9dbd23ba05e67",
+        "val"
+      ]
+    ],
+    "ice": [
+      [
+        "37d6d939a0d069f7cc39d842",
+        "val"
+      ],
+      [
+        "01db346972242fc0d0799060",
+        "train"
+      ],
+      [
+        "0a387c7c1220af741e4231d5",
+        "train"
+      ]
+    ],
+    "dragon": [
+      [
+        "14198a3f8bd4b2ab3db0329a",
+        "val"
+      ],
+      [
+        "9c5f8090fc28480204c49426",
+        "val"
+      ],
+      [
+        "031f8e8f058252cfe032e490",
+        "train"
+      ]
+    ],
+    "dark": [
+      [
+        "1f8cad35a3884e00b6e6ff04",
+        "val"
+      ],
+      [
+        "89d2f9c4aecdfc0c6817932f",
+        "val"
+      ],
+      [
+        "ef34e12d888114cba4f9ff84",
+        "val"
+      ]
+    ],
+    "fairy": [
+      [
+        "00d641c4518bfdfc9bb8e712",
+        "train"
+      ],
+      [
+        "011924eddd18817b8ff41b8b",
+        "train"
+      ],
+      [
+        "01b9c4caa80580d8b6513bed",
+        "train"
+      ]
+    ],
+    "water+dragon": [
+      [
+        "00cb5f58cd2558d35996798e",
+        "train"
+      ],
+      [
+        "0bcf30c1220c48713836c0a9",
+        "train"
+      ],
+      [
+        "0bd0785f70bab5dd663158e3",
+        "train"
+      ]
+    ],
+    "fire+dragon": [
+      [
+        "0ba0c04d12f326ff955e20ea",
+        "train"
+      ],
+      [
+        "220bcb25399f1f2b76fedb9f",
+        "train"
+      ],
+      [
+        "7cf97811777f678a7c3a1a8e",
+        "train"
+      ]
+    ],
+    "dragon+ghost": [
+      [
+        "0177c4f50f1ada68665275b5",
+        "val"
+      ],
+      [
+        "07e917d6167dde3312e7620c",
+        "train"
+      ],
+      [
+        "287a629b2bc010f7d558a097",
+        "train"
+      ]
+    ],
+    "bug+poison": [
+      [
+        "029a05e7452ccdb2fe163776",
+        "val"
+      ],
+      [
+        "05424dd2fbafcaf7cacc519b",
+        "val"
+      ],
+      [
+        "0002ec28c0fbd5e32b487b37",
+        "train"
+      ]
+    ],
+    "flying+electric": [
+      [
+        "533eb042b6bf5591c1e33bf9",
+        "val"
+      ],
+      [
+        "05fbcc311722f8bfe13280a6",
+        "train"
+      ],
+      [
+        "20e5df1d09dc03edf8f4207a",
+        "train"
+      ]
+    ],
+    "ghost+dark": [
+      [
+        "03c699cd4cbdcb4551c674c8",
+        "train"
+      ],
+      [
+        "104b0f255e6cdb643d3e708e",
+        "train"
+      ],
+      [
+        "98628c6940e343f417147497",
+        "train"
+      ]
+    ]
+  },
+  "variantes": [
+    "Insignias · 3.280",
+    "Detalle · +1.200",
+    "Miradas · +1.200",
+    "Postura · +1.200"
+  ],
+  "checkpoint": "runs/detalle_1200/detalle_01200.pt"
+}

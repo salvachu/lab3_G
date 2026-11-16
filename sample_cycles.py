@@ -14,7 +14,10 @@ from type_generator import TypeGenerator
 def load_generator(path,device):
     state=torch.load(path,map_location="cpu",weights_only=True)
     relief_stages=("paired_relief","paired_lineage","paired_engraved","paired_elemental","paired_prisma","paired_insignias","paired_insignias_neck")
-    if state.get("architecture")=="paired_trazo":
+    if state.get("architecture")=="paired_diverse":
+        from sprite_diversa import DiverseGenerator
+        model=DiverseGenerator()
+    elif state.get("architecture")=="paired_trazo":
         from sprite_trazo import TrazoGenerator
         model=TrazoGenerator()
     elif state.get("architecture")=="paired_ficha":

@@ -62,11 +62,12 @@ class ProfileGenerator(nn.Module):
         if learned_palette:
             self.register_buffer("pigment_freq", torch.full((len(TYPES),len(TYPES),24),1/24))
 
-    def forward(self,z,y,traits=None):
+    def forward(self,z,y,traits=None,family=None,outline=None):
         # Split dense batches to bound the memory used by the shared 3-D renderer.
         if len(z)>6:
-            groups = [None] * len(z.split(6)) if traits is None else traits.split(6)
-            return torch.cat([self.forward(a,b,c) for a,b,c in zip(z.split(6),y.split(6),groups)])
+            def chunks(value):
+                return [None]*len(z.split(6)) if value is None else value.split(6)
+            return torch.cat([self.forward(*part) for part in zip(z.split(6),y.split(6),chunks(traits),chunks(family),chunks(outline))])
         i,j=self.drawing.base.type_ids(y)
         if self.learned_palette:
             body=self.drawing.base
@@ -78,20 +79,20 @@ class ProfileGenerator(nn.Module):
             colors=body.tones[pick].clone()
             if traits is not None:
                 colors[:,0]=torch.lerp(colors[:,0], traits[:,3:], .79)
-            rgb,_=body.render(z,y,body.choose(z,y),hard=True,colors=colors)
+            rgb,_=body.render(z,y,body.choose(z,y) if family is None else family,hard=True,colors=colors)
             base=self.drawing.detail(F.pad(rgb.flatten(1,2),(16,16,16,16),value=1))
         else:
             base=self.drawing(z,y)
-        return self.apply_profile(base,z,i,j,traits)
+        return self.apply_profile(base,z,i,j,traits,outline)
 
-    def apply_profile(self,base,z,i,j,traits=None):
+    def apply_profile(self,base,z,i,j,traits=None,outline=None):
         """Fit paired horizontal outlines to a sampled TRAIN profile."""
         p,top,span,center=describe(base)
         affinity=(self.centers[None,:,:SHAPE]-p.flatten(1)[:,None]).square().mean(2)
         logits=self.freq[i,j].clamp_min(1e-7).log()-4*affinity
         choice=self.drawing.base.gumbel(logits.softmax(1),z[:,24:88],.85)
         sample=self.centers[choice]+.64*(self.basis[choice]*z[:,88:93,None].clamp(-2,2)).sum(1)
-        goal=sample[:,:SHAPE].reshape_as(p)
+        goal=sample[:,:SHAPE].reshape_as(p) if outline is None else outline.reshape_as(p)
         strength=.30 if self.learned_palette else .54
         target_mid=p[:,:,0]+strength*(goal[:,:,0]-p[:,:,0]).clamp(-.24,.24)
         factor=(goal[:,:,1].clamp_min(.035)/p[:,:,1].clamp_min(.035)).clamp(.54,1.95).pow(strength)

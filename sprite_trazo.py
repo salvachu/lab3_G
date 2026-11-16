@@ -40,6 +40,14 @@ class OutlinePainter(nn.Module):
         return (1+alpha*(color-1)).reshape_as(src),logits
 
 
+def refine_pair(painter,draft,tags):
+    painted,logits=painter(draft,tags,hard=True)
+    old=draft.reshape(-1,3,96,96)
+    new=painted.reshape_as(old)
+    overlap=(old.amin(1,keepdim=True)<.91)&(logits>0)
+    return torch.where(overlap,torch.lerp(old,new,.42),new).reshape_as(draft)
+
+
 class TrazoGenerator(nn.Module):
     def __init__(self):
         super().__init__()
@@ -47,11 +55,7 @@ class TrazoGenerator(nn.Module):
         self.painter=OutlinePainter()
 
     def refine(self,draft,tags):
-        painted,logits=self.painter(draft,tags,hard=True)
-        old=draft.reshape(-1,3,96,96)
-        new=painted.reshape_as(old)
-        overlap=(old.amin(1,keepdim=True)<.91)&(logits>0)
-        return torch.where(overlap,torch.lerp(old,new,.42),new).reshape_as(draft)
+        return refine_pair(self.painter,draft,tags)
 
     def forward(self,z,tags):
         return self.refine(self.base(z,tags),tags)
