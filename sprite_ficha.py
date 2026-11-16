@@ -264,5 +264,9 @@ class FichaGenerator(nn.Module):
             views=draft.reshape(-1,3,96,96)
             contrast=(F.max_pool2d(views,3,1,1)+F.max_pool2d(-views,3,1,1)).amax(1,keepdim=True)
             gain=(.85-.41*contrast).clamp(.17,.85)
+            if self.all_bodies:
+                # Native inked surfaces already contain discrete colour ramps.
+                pure_ghost=(y[:,TYPES.index("ghost")]>0)&(y.sum(1)==1)
+                gain=gain*torch.where(pure_ghost,1.,.34).repeat_interleave(2)[:,None,None,None]
             return torch.lerp(views,painted.reshape_as(views),gain).reshape_as(draft)
         return painted
