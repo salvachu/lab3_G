@@ -1,0 +1,5 @@
+.venv/
+__pycache__/
+*.pyc
+dataset/
+estructura/train64.pt

@@ -1,0 +1,9 @@
+{
+  "desarrollo": [137, 211, 359, 487, 613, 751, 887, 997],
+  "reserva": [1201, 1327, 1451, 1597, 1709, 1861, 1999, 2131],
+  "portada": [1201, 1327],
+  "tipos": ["water", "fire", "grass+poison", "normal+flying"],
+  "regla_cuerpo": "1 si en las dos vistas hay una masa corporal y al menos una parte distinguible como cabeza, patas, cola o aleta. Un óvalo, un agujero o manchas dispersas por sí solos no bastan.",
+  "regla_rasgo": "1 si se puede nombrar una misma estructura o proporción característica visible en ambas vistas. Un color común o dos círculos genéricos no bastan. Se valora por separado del cuerpo.",
+  "decision": "Primero cuerpos legibles en ambas vistas, después rasgos compartidos y variación entre semillas; mantener visibles las regresiones y los empates. Elegir finalistas en desarrollo antes de abrir reserva."
+}

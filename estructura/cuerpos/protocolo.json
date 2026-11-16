@@ -1,0 +1,14 @@
+{
+  "checkpoint": "runs\\ficha_todos\\step_002000.pt",
+  "semillas": [
+    96553,
+    121211,
+    121212,
+    318071,
+    318089,
+    318101
+  ],
+  "tipos_simples": 18,
+  "combinaciones_verificadas": 171,
+  "condiciones_con_seis_semillas": 24
+}

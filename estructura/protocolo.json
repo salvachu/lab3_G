@@ -1,0 +1,9 @@
+{
+  "desarrollo": [137,211,359,487,613,751,887,997],
+  "portada_desarrollo":[137,211],
+  "reserva":[12577,12919,13217,13591,13901,14249,14591,14939],
+  "portada_final":[12577,12919],
+  "referencia_modelo":"runs/siluetas_5000/step_05000.pt",
+  "plan":"runs/noche_plan_10000/step_07500.pt",
+  "criterio":"Cuerpo reconocible solo si hay un tronco unido a una cabeza y al menos una extremidad, cola, aleta o ala legible en las dos vistas. Rasgo compartido solo si se puede señalar la misma estructura, marca localizada o combinación característica en frente y espalda. El color común no basta. Anotar por separado. Revisar las 32 parejas por modelo con etiquetas ocultas antes de revelar su clave."
+}

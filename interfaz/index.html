@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratorio de sprites</title><link rel="stylesheet" href="/app.css"></head>
+<body><header><span class="pixel" aria-hidden="true">✦</span> Laboratorio de sprites</header>
+<main><section class="panel"><div><p class="eyebrow">GENERADOR CONDICIONAL</p><h1>Crea una criatura.</h1></div>
+<form id="form"><label>Modelo<select id="model"><option value="ficha">Ficha · 1.200 pasos</option><option value="cuerpos">Cuerpos · 2.000 pasos</option></select></label><label>Tipo principal<select id="primary" required></select></label><label>Segundo tipo<select id="secondary"></select></label>
+<label>Semilla <span class="seed"><input id="seed" type="number" min="0" max="2147483647" step="1" value="318071" required><button type="button" id="random" title="Sortear otra semilla" aria-label="Sortear otra semilla">⤨</button></span></label>
+<button id="submit" class="generate" type="submit">Generar criatura <span>↗</span></button><output id="status" role="status"></output></form></section>
+<section class="result"><div class="result-head"><h2 id="specimen">Criatura</h2><span id="number"></span></div><div class="views">
+<figure><div class="stage"><img id="front" alt="Sprite de frente" hidden></div><figcaption>Frente <a id="save-front" hidden>Descargar PNG ↓</a></figcaption></figure>
+<figure><div class="stage"><img id="back" alt="Sprite de espalda" hidden></div><figcaption>Espalda <a id="save-back" hidden>Descargar PNG ↓</a></figcaption></figure></div></section>
+<section class="history" hidden><h2>Generaciones recientes</h2><div id="items"></div></section></main><script src="/app.js"></script></body></html>
