@@ -64,7 +64,18 @@ primary.onchange = secondType;
 async function init() {
   names = await (await fetch("/api/tipos")).json();
   for (const [v,n] of Object.entries(names)) primary.add(new Option(n,v));
-  primary.value = "water"; secondType(); secondary.value = "dragon";
+  const query = new URLSearchParams(location.search);
+  const [first, second] = (query.get("tipos") || "water,dragon").split(",");
+  primary.value = Object.hasOwn(names, first) ? first : "water";
+  secondType();
+  secondary.value = second !== primary.value && Object.hasOwn(names, second) ? second : "";
+  const model = el("model"), requestedModel = query.get("modelo");
+  if (Array.from(model.options).some(option => option.value === requestedModel)) model.value = requestedModel;
+  const requestedSeed = query.get("semilla");
+  if (requestedSeed !== null && /^\d+$/.test(requestedSeed) && Number(requestedSeed) <= 2147483647) {
+    seed.value = requestedSeed;
+    el("fixed").checked = true;
+  }
   await generate();
 }
 init().catch(() => { el("status").textContent = "No se pudieron cargar los tipos. Recarga la página."; });

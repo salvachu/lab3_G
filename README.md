@@ -22,6 +22,12 @@ Abre [la interfaz local](http://127.0.0.1:7860) y mantén la terminal abierta. P
 
 ## Modelos
 
+**Referencias visuales que queremos conservar.** Para Fantasma puro, Ficha con las semillas 96553, 121211 y 121212 produce el manto, el farol y la máscara. Para Dragón, Lucha y Bicho/Veneno, usa Perfiles · 64 grupos con 318071. Con esa misma semilla, Pigmentos · 24 paletas da el insecto de alas azules y Detalle · +1.200 da la versión de alas extendidas. Las tres versiones se pueden seleccionar en la interfaz. Cada checkpoint admite otras semillas.
+
+[Tres fantasmas de Ficha](estructura/ficha/fantasma_con_gpt.png) · [Detalle, Perfiles y Pigmentos frente a sprites reales](estructura/perfiles_pareados/comparacion.png)
+
+Para evaluar una candidata, comparar frente y espalda con estos ejemplos y con una misma tanda de semillas adicionales para cada tipo. Conservar la versión preferida por tipo cuando la candidata pierde un rasgo que se quería preservar. El comando `python verificar_referencias.py` comprueba que los checkpoints anteriores siguen reproduciendo los ejemplos de las láminas, con tolerancia a las diferencias entre CPU y CUDA.
+
 **AEGAN condicional desde cero.** El experimento neuronal del laboratorio entrenó un generador que recibe 96 valores de ruido y uno o dos tipos y produce ambas vistas en seis canales. El discriminador de imágenes evalúa el par junto con sus tipos. El entrenamiento también utiliza un encoder y un crítico del espacio latente. Las muestras libres todavía muestran contornos imprecisos. Se incluyen los pesos del generador al paso 6.000 y la comparación de tres condiciones con seis semillas por condición. [Entrenamiento](train_aegan_pairs.py) · [Muestras del checkpoint](runs/aegan_control_6000/step_06000.png).
 
 ```bash
@@ -38,7 +44,7 @@ Para entrenar el control desde cero con el dataset preparado y CUDA, ejecuta `py
 
 Ficha y Cuerpos son híbridos. El código dibuja la anatomía inicial y el perfil aprendido ajusta la silueta. El acabado neuronal se entrena contra un discriminador condicionado por tipo y ficha y actúa sobre el color dentro de la figura.
 
-**Trazo** parte de Cuerpos. Su red adicional predice color y máscara para ambas vistas a 96 px, condicionada por tipos y entrenada con 800 pasos de reconstrucción y aprendizaje adversarial. Puede cambiar el borde del boceto. En los sprites de especies apartadas mejoró el solapamiento de silueta tras deteriorar las imágenes de los 18 tipos. Esta prueba mide restauración. Para juzgar la generación libre se incluyen seis semillas fijas por condición y los checkpoints se pueden comparar desde la interfaz. Los pesos de las cuatro variantes están incluidos en `pesos/`.
+**Trazo** parte de Cuerpos. Su red adicional predice color y máscara para ambas vistas a 96 px, condicionada por tipos y entrenada con 800 pasos de reconstrucción y aprendizaje adversarial. Puede cambiar el borde del boceto. En los sprites de especies apartadas mejoró el solapamiento de silueta tras deteriorar las imágenes de los 18 tipos. Esta prueba mide restauración. Para juzgar la generación libre se incluyen seis semillas fijas por condición y los checkpoints se pueden comparar desde la interfaz. Los pesos de los modelos de la interfaz están incluidos en `pesos/`.
 
 [Comparación de ocho tipos](estructura/trazo/comparacion.png) · [Insecto hoja](estructura/trazo/insecto_hoja.png) · [Seis primeros tipos](estructura/trazo/tipos_1.png) · [Seis siguientes](estructura/trazo/tipos_2.png) · [Seis últimos](estructura/trazo/tipos_3.png) · [Medidas por tipo](estructura/trazo/validacion.csv)
 
