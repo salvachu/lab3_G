@@ -22,6 +22,14 @@ Abre [la interfaz local](http://127.0.0.1:7860) y mantén la terminal abierta. P
 
 ## Modelos
 
+**AEGAN condicional desde cero.** El experimento neuronal del laboratorio entrenó un generador que recibe 96 valores de ruido y uno o dos tipos y produce ambas vistas en seis canales. El discriminador de imágenes evalúa el par junto con sus tipos. El entrenamiento también utiliza un encoder y un crítico del espacio latente. Las muestras libres todavía muestran contornos imprecisos. Se incluyen los pesos del generador al paso 6.000 y la comparación de tres condiciones con seis semillas por condición. [Entrenamiento](train_aegan_pairs.py) · [Muestras del checkpoint](runs/aegan_control_6000/step_06000.png).
+
+```bash
+python sample_cycles.py pesos/aegan_6000.pth --types fire water+dragon bug+poison --seeds 96137 96553 97001 --output aegan.png
+```
+
+Para entrenar el control desde cero con el dataset preparado y CUDA, ejecuta `python train_aegan_pairs.py runs/aegan_repeticion --steps 6000 --batch 16` usando una carpeta de salida nueva.
+
 **Ficha diversa** añade un generador de anatomía por flujo condicional, entrenado durante 2.600 pasos con 11.653 pares de sprites de 923 especies de la partición de entrenamiento. A partir de los tipos y el ruido muestrea conjuntamente una de ocho familias, el perfil de ambas vistas, proporciones, pigmento y un mapa de luminosidad para cada lado. El dibujo aún depende de las familias del laboratorio y usa el acabado adversarial de Ficha. Bicho/Veneno conserva los cuerpos de insecto. Agua/Dragón combina los cuerpos acuáticos con familias de Ficha. Fantasma puro alterna entre figuras espectrales y animales, y Fantasma/Psíquico usa el acabado de Trazo. Se muestran cuatro semillas consecutivas por tipo. El benchmark también mide ocho semillas independientes. La diferencia de silueta mide variación, no calidad artística.
 
 [Comparar con reales y GPT](estructura/diversa/comparacion.png) · [Fantasma/Psíquico en cinco semillas](estructura/diversa/fantasma_psiquico.png) · [Medidas por tipo](estructura/diversa/medidas.json)
