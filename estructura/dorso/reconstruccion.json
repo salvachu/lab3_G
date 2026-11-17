@@ -1,0 +1,10 @@
+[
+  {
+    "pasos": 20000,
+    "ema": true,
+    "especies": 102,
+    "IoU_silueta": 0.9170560836791992,
+    "error_RGB_figura": 0.1711435317993164,
+    "error_RGB_detalles": 0.15363924205303192
+  }
+]

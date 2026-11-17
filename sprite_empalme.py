@@ -41,6 +41,7 @@ class SpliceGenerator(nn.Module):
     def __init__(self, heads, bodies, joined=False):
         super().__init__()
         self.joined=joined
+        self.finish_dorsal=False
         for role,count,height in (("head",heads,END),("body",bodies,SIZE-START)):
             self.register_buffer(role+"_tiles",torch.zeros(count,2,height,SIZE,dtype=torch.uint8))
             self.register_buffer(role+"_colors",torch.zeros(count,COLORS,3))
@@ -149,7 +150,7 @@ class SpliceGenerator(nn.Module):
         aligned=lower.gather(-1,x.round().long().clamp(0,SIZE-1))
         return aligned.masked_fill((x<0)|(x>SIZE-1),0)
 
-    def draft(self,z,tags):
+    def draft(self,z,tags,with_back_source=False):
         h,b=self.select(z,tags)
         upper,lower=self.register_parts(z,h,b)
         if self.joined:
@@ -205,6 +206,8 @@ class SpliceGenerator(nn.Module):
         distance=(self.ink[None,:,2:8]-inherited[:,None,2:8]).square().mean((2,3))
         ink_id=self.choose(weights*(-2.5*distance).exp(),torch.special.ndtr(z[:,20]))
         colors=torch.lerp(inherited,self.ink[ink_id],.70)
+        if with_back_source:
+            return indices,band,colors,lower[:,1]
         return indices,band,colors
 
     @staticmethod
@@ -212,6 +215,14 @@ class SpliceGenerator(nn.Module):
         return colors[torch.arange(len(indices),device=indices.device)[:,None,None,None],indices].permute(0,1,4,2,3).flatten(1,2)
 
     def forward(self,z,tags):
-        ids,band,colors=self.draft(z,tags)
+        draft=self.draft(z,tags,with_back_source=self.finish_dorsal)
+        ids,band,colors=draft[:3]
         ids=self.painter(ids,band,tags).argmax(2)
+        if self.finish_dorsal:
+            from sprite_dorso import finish_back
+            seams=band[:,1].argmax(1).detach().cpu().numpy()
+            backs=ids[:,1].detach().cpu().numpy()
+            sources=draft[3].detach().cpu().numpy()
+            ids[:,1]=torch.stack([torch.from_numpy(finish_back(back,seam,source))
+                                  for back,seam,source in zip(backs,seams,sources)]).to(ids.device)
         return F.pad(self.colorize(ids,colors),(16,16,16,16),value=1)

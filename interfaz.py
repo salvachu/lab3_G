@@ -50,6 +50,9 @@ def main():
     device="cuda" if torch.cuda.is_available() and not args.cpu else "cpu"
     torch.set_num_threads(min(4,torch.get_num_threads()))
     nets={name:load_generator(path,device) for name,path in WEIGHTS.items()}
+    nets["jerarquica_20000"]=load_generator(ROOT/"pesos"/"jerarquica_20000.pth",device)
+    nets["empalme_dorso"]=load_generator(WEIGHTS["empalme_union"],device)
+    nets["empalme_dorso"].finish_dorsal=True
     lock=threading.Lock()
     assets=ROOT/"interfaz"
 

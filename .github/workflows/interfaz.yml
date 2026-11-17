@@ -23,7 +23,7 @@ jobs:
           from io import BytesIO
           from urllib.request import urlopen, Request
           from PIL import Image
-          for model in ("ficha", "cuerpos", "trazo", "diversa", "detalle", "perfiles", "pigmentos", "jerarquica", "empalme", "jerarquica_nueva", "empalme_union"):
+          for model in ("ficha", "cuerpos", "trazo", "diversa", "detalle", "perfiles", "pigmentos", "jerarquica", "empalme", "jerarquica_nueva", "empalme_union", "empalme_dorso", "jerarquica_20000"):
               data=json.dumps({"model":model,"types":["bug","poison"],"seed":96553}).encode()
               result=json.load(urlopen(Request("http://127.0.0.1:7860/api/generar",data=data)))
               for side in ("front","back"):
