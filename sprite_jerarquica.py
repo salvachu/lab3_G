@@ -60,6 +60,8 @@ class HierarchicalGenerator(nn.Module):
             self.register_buffer("centres",torch.zeros(components,width,dtype=torch.float16))
             self.register_buffer("directions",torch.zeros(components,5,width,dtype=torch.float16))
             self.register_buffer("frequencies",torch.ones(len(TYPES),len(TYPES),components)/components)
+            if prior_method=="typed_convex":
+                self.register_buffer("support_tags",torch.zeros(components,5,len(TYPES)))
 
     def decode(self,tags,noise,features=None,encoded=None):
         cond=self.type_features(tags)
@@ -105,10 +107,14 @@ class HierarchicalGenerator(nn.Module):
             j=torch.where(tags>0,axis,0).amax(1)
             weights=self.frequencies[i,j]
             group=(weights.cumsum(1)<torch.special.ndtr(z[:,:1])).sum(1).clamp_max(self.components-1)
-            if self.prior_method=="convex":
+            if self.prior_method in ("convex","typed_convex"):
                 # Draw two local modes without replacement and interpolate.
                 # Each stored direction is shrunk towards a six-species mean.
-                order=z[:,1:6].argsort(1,descending=True)
+                scores=z[:,1:6]
+                if self.prior_method=="typed_convex":
+                    affinity=(self.support_tags[group]*tags[:,None]).sum(-1)
+                    scores=scores+1.7*affinity
+                order=scores.argsort(1,descending=True)
                 alpha=(.08+.24*torch.special.ndtr(z[:,6:7]))
                 delta=torch.lerp(self.directions[group,order[:,0]].to(z),
                                  self.directions[group,order[:,1]].to(z),alpha)

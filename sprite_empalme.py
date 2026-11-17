@@ -38,8 +38,9 @@ class SeamPainter(nn.Module):
 
 
 class SpliceGenerator(nn.Module):
-    def __init__(self, heads, bodies):
+    def __init__(self, heads, bodies, joined=False):
         super().__init__()
+        self.joined=joined
         for role,count,height in (("head",heads,END),("body",bodies,SIZE-START)):
             self.register_buffer(role+"_tiles",torch.zeros(count,2,height,SIZE,dtype=torch.uint8))
             self.register_buffer(role+"_colors",torch.zeros(count,COLORS,3))
@@ -111,15 +112,59 @@ class SpliceGenerator(nn.Module):
                         (head_c-body_c).clamp(-9,9))
         return upper,lower
 
+    @staticmethod
+    def align_torso(upper,lower):
+        """Gently fit the lower torso to the upper trunk, fading out before the feet."""
+        axis=torch.arange(SIZE,device=lower.device,dtype=torch.float32)
+        # Find a vertical shift for each view before matching the trunk widths.
+        # Restrict it to the middle third so a good pair keeps its head and feet.
+        offsets=axis.new_tensor([0,-2,2,-4,4,-6,6])
+        fade=(1-(axis-31).abs()/17).clamp_min(0)
+        source=(axis[None]+offsets[:,None]*fade).round().long().clamp(0,SIZE-1)
+        top=upper[:,:,27:37]>0
+        candidates=lower[:,:,source[:,27:37],:]>0
+        shared=(top[:,:,None]&candidates).sum((-2,-1))
+        total=top.sum((-2,-1))[:,:,None]+candidates.sum((-2,-1))
+        overlap=2*shared/total.clamp_min(1)
+        score=overlap-.014*offsets.abs()
+        choice=score.argmax(-1)
+        lower=lower.gather(2,source[choice][...,None].expand_as(lower))
+        def span(tile):
+            mask=(tile>0).float()
+            mass=mask.sum(-1,keepdim=True)
+            cumulative=mask.cumsum(-1)
+            left=(cumulative<.17*mass).sum(-1)
+            right=(cumulative<.83*mass).sum(-1)
+            return (left+right)*.5,(right-left).float(),mass.squeeze(-1)
+        top,upper_width,upper_mass=span(upper)
+        base,lower_width,lower_mass=span(lower)
+        valid=(upper_mass>4)&(lower_mass>4)&(axis>=25)&(axis<=37)
+        def smooth(v):
+            return F.avg_pool1d((v*valid).float(),9,1,4)/F.avg_pool1d(valid.float(),9,1,4).clamp_min(1/9)
+        # Clamp stretches so that a wing crossing the trunk cannot swallow a limb.
+        shift=smooth((top-base).clamp(-7,7))
+        stretch=smooth(((upper_width+2)/(lower_width+2)).clamp(.78,1.28)-1)
+        envelope=(1-(axis-31).abs()/14).clamp_min(0)
+        x=(axis-base[...,None]-shift[...,None]*envelope[:,None])/(1+stretch[...,None]*envelope[:,None])+base[...,None]
+        aligned=lower.gather(-1,x.round().long().clamp(0,SIZE-1))
+        return aligned.masked_fill((x<0)|(x>SIZE-1),0)
+
     def draft(self,z,tags):
         h,b=self.select(z,tags)
         upper,lower=self.register_parts(z,h,b)
+        if self.joined:
+            lower=self.align_torso(upper,lower)
         # Find the least visible left-to-right cut through the two drawings.
         start,end=25,39
         top,base=upper[:,:,start:end],lower[:,:,start:end]
         yy=torch.arange(start,end,device=z.device)[None,None,:,None]
         mid=(31.5+2.6*z[:,8].tanh())[:,None,None,None]
         energy=2.2*((top==0)^(base==0)).float()+.065*(top-base).abs()+.075*(yy-mid).abs()
+        if self.joined:
+            # Penalize cuts through incompatible markings and silhouette edges.
+            difference=((top-base).abs().float()/8+2*((top>0)^(base>0)).float())
+            neighbourhood=F.avg_pool2d(difference,(5,3),1,(2,1),count_include_pad=False)
+            energy=energy+1.3*neighbourhood
         dp=energy[:,:,:,0]
         history=[]
         for x in range(1,SIZE):
@@ -136,6 +181,18 @@ class SpliceGenerator(nn.Module):
         seam=torch.cat(path[::-1],-1)[:,:,None,:]+start
         distance=torch.arange(SIZE,device=z.device)[None,None,:,None]-seam
         indices=torch.where(distance<=0,upper,lower)
+        if self.joined:
+            # Match the local midtones that actually meet without recolouring the
+            # whole lower body. Keep the darkest outlines and highlights intact.
+            upper_tone=upper.gather(2,seam)
+            lower_tone=lower.gather(2,seam+1)
+            valid=(upper_tone>1)&(lower_tone>1)&(upper_tone<8)&(lower_tone<8)
+            weight=F.avg_pool2d(valid.float(),(1,7),1,(0,3))
+            difference=F.avg_pool2d(((upper_tone-lower_tone)*valid).float(),(1,7),1,(0,3))
+            correction=(difference/weight.clamp_min(.15)).clamp(-1.7,1.7)
+            correction=(correction*(1-(distance-1).abs()/6).clamp_min(0)).round().long()
+            adjust=(distance>0)&(indices>1)&(indices<8)&(weight>.25)
+            indices=torch.where(adjust,(indices+correction).clamp(2,7),indices)
         band=(1-distance.abs()/6).clamp_min(0)
         # Use one palette for the two views. Both sources use intensity-ordered
         # colour indices, so highlights and dark ink keep their respective roles.

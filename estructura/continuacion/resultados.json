@@ -1,0 +1,51 @@
+{
+  "semillas": [
+    42003,
+    43001,
+    43002,
+    43003,
+    43004
+  ],
+  "pasos": [
+    9000,
+    18000,
+    1500,
+    3600
+  ],
+  "uniones": {
+    "Empalme · 1.500": {
+      "pares": 32,
+      "salto_contorno": 0.09159408547566272,
+      "salto_tono": 0.24517092434689403
+    },
+    "Empalme · 3.600": {
+      "pares": 32,
+      "salto_contorno": 0.04639957632753067,
+      "salto_tono": 0.10220430290792137
+    },
+    "pares_con_menor_salto_de_contorno": 22,
+    "pares_con_mayor_salto_de_contorno": 10
+  },
+  "distancia_siluetas": {
+    "GAN · 9.000": 0.5116862571433647,
+    "GAN · 18.000": 0.5090029910479117,
+    "Empalme · 1.500": 0.5268203215699981,
+    "Empalme · 3.600": 0.5245688258572456
+  },
+  "similitud_train": {
+    "especies_validacion": 102,
+    "p05_validacion": 0.1931806169450283,
+    "modelos": {
+      "GAN · 9.000": {
+        "pares": 32,
+        "por_debajo_p05_validacion": 21,
+        "distancia_mediana": 0.17785052955150604
+      },
+      "GAN · 18.000": {
+        "pares": 32,
+        "por_debajo_p05_validacion": 30,
+        "distancia_mediana": 0.1382559984922409
+      }
+    }
+  }
+}

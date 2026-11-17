@@ -19,7 +19,7 @@ def load_generator(path,device):
         model=HierarchicalGenerator(state.get("components",0),state.get("prior_method","gaussian"))
     elif state.get("architecture")=="paired_splice":
         from sprite_empalme import SpliceGenerator
-        model=SpliceGenerator(state["heads"],state["bodies"])
+        model=SpliceGenerator(state["heads"],state["bodies"],joined=state.get("joined",False))
     elif state.get("architecture")=="paired_mosaic":
         from sprite_mosaico import MosaicGenerator
         model=MosaicGenerator()

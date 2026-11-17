@@ -17,14 +17,15 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--checkpoint",type=Path,default=Path("runs/jerarquica/checkpoint.pt"))
     p.add_argument("--output",type=Path,default=Path("pesos/jerarquica.pth"))
-    p.add_argument("--metodo",choices=("gaussian","convex"),default="convex")
+    p.add_argument("--metodo",choices=("gaussian","convex","typed_convex"),default="convex")
+    p.add_argument("--ema",action="store_true",help="Ajusta el prior sobre el generador con pesos promediados.")
     args=p.parse_args()
     state=torch.load(args.checkpoint,map_location="cpu",weights_only=True)
     data=dataset()
     if state["data"]!=data["data"]: raise ValueError("Cambió la partición")
     groups=256
-    model=HierarchicalGenerator(groups).cuda().eval()
-    model.load_state_dict(dict(model.state_dict(),**state["net"]))
+    model=HierarchicalGenerator(groups,args.metodo).cuda().eval()
+    model.load_state_dict(dict(model.state_dict(),**state["generator" if args.ema else "net"]))
     enc=PosteriorEncoder().cuda().eval()
     enc.load_state_dict(state["encoder"])
     fields=[]; features=[]
@@ -70,8 +71,10 @@ def main():
     values=fields[near]
     mu=(values*weights[None,:,None]).sum(1)
     model.centres.copy_(mu)
-    if args.metodo=="convex":
+    if args.metodo in ("convex","typed_convex"):
         model.directions.copy_(.72*(values[:,:5]-mu[:,None]))
+        if args.metodo=="typed_convex":
+            model.support_tags.copy_(y[near[:,:5]])
     else:
         residual=(values-mu[:,None])*weights.sqrt()[None,:,None]
         _,vec=torch.linalg.eigh(residual@residual.transpose(1,2))
@@ -88,8 +91,21 @@ def main():
                 common=((y[:,i]@counts+global_rate)*(y[:,j]@counts+global_rate)/global_rate).sqrt()
                 score=exact+2.*common/common.sum()
             freq=(score/score.sum()).pow(1.6)/global_rate.pow(.6)
+            if args.metodo=="typed_convex":
+                # A populous cluster can have few representatives of a given type.
+                # Weight both its membership and the modes the sampler can draw.
+                support=model.support_tags
+                compatible=support[:,:,i] if i==j else .5*(support[:,:,i]+support[:,:,j])
+                freq*=.18+compatible.mean(1)+compatible.amax(1)
+                # Rare dual labels can otherwise route half of all seeds to one
+                # component. Temper only the distributions with low support.
+                for _ in range(12):
+                    prob=freq/freq.sum()
+                    if prob.square().sum()<=1/18 and prob.max()<=.12:
+                        break
+                    freq=prob.pow(.9)
             model.frequencies[i,j]=model.frequencies[j,i]=freq/freq.sum()
-    save(dict(architecture="paired_hierarchical",components=groups,prior_method=args.metodo,step=state["step"],
+    save(dict(architecture="paired_hierarchical",components=groups,prior_method=args.metodo,ema=args.ema,step=state["step"],
               data=data["data"],generator=model.state_dict()),args.output)
     print(args.output,state["step"],flush=True)
 

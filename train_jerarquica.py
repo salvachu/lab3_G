@@ -119,7 +119,8 @@ def main():
         loss+=beta*sum(w*k.mean()/4096 for k,w in zip(kl,kl_weights))
         if step>=180 and step%2==0:
             draw=noise()
-            if fine and step%4==0:
+            calibrated=step>12500
+            if fine and (step%4==0 or calibrated):
                 # Match the inference distribution during adversarial training.
                 # Both examples come from TRAIN and have different species IDs.
                 with torch.no_grad():
@@ -128,9 +129,24 @@ def main():
                     other_fields=[]
                     net.decode(types[other],[torch.zeros_like(v) for v in draw],enc(other_x),encoded=other_fields)
                     ratio=.18+.25*torch.rand(n,1,device="cuda")
-                    draw=[torch.lerp(a,b,ratio).reshape_as(v) for a,b,v in zip(eps,other_fields,draw)]
+                    anchor=eps
+                    if calibrated:
+                        anchor=[]
+                        net.decode(y,[torch.zeros_like(v) for v in draw],enc(x),encoded=anchor)
+                    draw=[torch.lerp(a,b,ratio).reshape_as(v) for a,b,v in zip(anchor,other_fields,draw)]
+                    if calibrated:
+                        draw=[v+.11*torch.randn_like(v) for v in draw]
             free,inks,_=net.decode(y,draw)
             sample=net.rgb(free,inks,straight=True)
+            if calibrated:
+                # Teach the decoder to preserve the main body and internal markings
+                # when its input lies between species, as it does in the fitted prior.
+                blended_ink=F.cross_entropy(free[:,:,1:].flatten(0,1),(target-1).clamp_min(0).flatten(0,1),
+                                            reduction="none").reshape_as(target)
+                stable=foreground & (F.avg_pool2d(foreground.float(),3,1,1)>.7)
+                loss+=.65*F.binary_cross_entropy_with_logits(free[:,:,0],foreground.float())
+                loss+=.42*(blended_ink*stable*weight_fg).sum()/(stable*weight_fg).sum().clamp_min(1)
+                loss+=.8*F.smooth_l1_loss(inks,palette,beta=.12)
             gt=F.pad(palette,(0,0,1,0),value=1)[torch.arange(n,device="cuda")[:,None,None,None],target]
             gt=gt.permute(0,1,4,2,3).flatten(1,2)
             judge.requires_grad_(True)

@@ -46,7 +46,7 @@ def nearest_training_pairs(queries, rows, train, images, out):
     threshold=float(np.percentile(distance[len(queries):],5))
     result={"especies_validacion":len(controls),"p05_validacion":threshold,"modelos":{}}
     records=[]
-    for model in ("jerarquica","empalme"):
+    for model in dict.fromkeys(record[0] for record in queries):
         indices=sorted((i for i,rec in enumerate(queries) if rec[0]==model),key=distance.__getitem__)
         values=[distance[i] for i in indices]
         result["modelos"][model]={"pares":len(values),"por_debajo_p05_validacion":sum(v<threshold for v in values),

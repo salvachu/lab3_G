@@ -2,7 +2,7 @@
 
 Elige uno o dos tipos y pulsa **Generar criatura**. Cada clic sortea una semilla y muestra dos vistas descargables de 96 × 96 píxeles. Marca **Fijar semilla para comparar** si quieres recuperar una criatura o cambiar de modelo con la misma semilla. Escribir una semilla o seleccionar una criatura del historial también la fija. Para recuperar el ejemplar espectral de la sesión, elige Trazo, Fantasma y Psíquico y escribe 318071.
 
-![Sprites reales, modelos anteriores, GAN jerárquica, Empalme y referencia GPT a 96 px](estructura/empalme/comparacion.png)
+![Sprites reales, dos checkpoints de la GAN jerárquica, dos de Empalme y referencia GPT a 96 px](estructura/continuacion/comparacion.png)
 
 ## Abrir en Linux
 
@@ -22,6 +22,12 @@ Abre [la interfaz local](http://127.0.0.1:7860) y mantén la terminal abierta. P
 
 ## Modelos
 
+**Empalme · unión ajustada** conserva las dos especies elegidas por la versión de 1.500 pasos para cada semilla. Desplaza y ajusta el ancho del torso donde se encuentran los dos dibujos. Busca un camino de corte que respete los contornos y las marcas de pigmento, y ajusta los tonos cercanos a la unión. El retocador adversarial llegó a 3.600 pasos con ejemplos de cortes curvos, desplazamientos y cambios de tono. Se puede comparar en el selector con el Empalme original. [Comparación ampliada de las uniones](estructura/continuacion/union.png) · [Cuatro semillas](estructura/continuacion/empalme_despues.png)
+
+**GAN jerárquica · 18.000 pasos** continúa el checkpoint de 12.500 pasos del mismo generador. El entrenamiento añade una pérdida de silueta y pigmento sobre mezclas de dos especies próximas en su representación interna. Al generar, el muestreo da más peso a los grupos y variaciones asociados a los tipos solicitados. El generador sigue dibujando ambos lados desde una semilla. [Cuatro semillas](estructura/continuacion/gan_despues.png) · [Progresión por pasos](estructura/continuacion/progresion.png) · [Reconstrucción de especies de validación](estructura/continuacion/reconstruccion.json) · [Medidas de generación libre](estructura/continuacion/resultados.json)
+
+En cuatro semillas de reserva y ocho condiciones, Empalme redujo del 9,2 % al 4,6 % la proporción de posiciones en la unión donde la figura se interrumpe entre dos filas. Mejoraron 22 de 32 pares según esa medida. En la GAN, la reconstrucción media de siluetas mejoró del 88,4 % al 91,5 % de solapamiento en 102 especies de validación. En generación libre, 30 de 32 pares de la GAN nueva quedaron por debajo del percentil 5 de distancia de validación a entrenamiento, frente a 21 de 32 del control. Esto indica un mayor parecido a los cuerpos de entrenamiento según esa distancia de color y silueta. [Ejemplos más cercanos](estructura/continuacion/parecidos_train.png) · [Primeros nueve tipos](estructura/continuacion/tipos_1.png) · [Otros nueve tipos](estructura/continuacion/tipos_2.png)
+
 **GAN jerárquica** recibe una semilla y uno o dos tipos. Un generador convolucional dibuja ambos lados con una paleta común. Se entrenó desde cero con reconstrucción, un discriminador condicional y ruido a tres escalas. Para muestrear se ajustaron 256 grupos sobre representaciones del conjunto de entrenamiento. Cada centro combina seis especies distintas. La red genera los píxeles en la interfaz. Las siluetas cambian entre semillas, aunque a varias criaturas les faltan ojos legibles o un rasgo que identifique su tipo.
 
 **Empalme** reutiliza regiones de dos especies distintas del conjunto de entrenamiento. Alinea las regiones en ambas vistas y comparte los colores entre frente y espalda. Una red entrenada durante 1.500 pasos con reconstrucción y un discriminador retoca la unión. Este procedimiento conserva más detalles originales y a veces deja a la vista la especie que aportó la cabeza o el cuerpo. La lámina de procedencia muestra los dos sprites que contribuyeron a cada ejemplo.
@@ -30,7 +36,7 @@ Abre [la interfaz local](http://127.0.0.1:7860) y mantén la terminal abierta. P
 
 [Comparación con AEGAN y el experimento Mosaico](estructura/empalme/modelos.png) · [Primeros nueve tipos](estructura/empalme/tipos_1.png) · [Otros nueve tipos](estructura/empalme/tipos_2.png) · [Resultados de las comprobaciones](estructura/empalme/evaluacion.json)
 
-En la interfaz se usa el paso **9.000** de la GAN jerárquica. En 102 especies apartadas, el ajuste hasta 12.500 mejoró el solapamiento medio al reconstruir siluetas del 88,4 % al 89,4 %. Al generar libremente con cuatro semillas fijadas antes de la comparación, perdió continuidad en algunos cuerpos, especialmente en Dragón. Se conservó el paso 9.000 por esa revisión visual. [Generación a 9.000 pasos](estructura/empalme/desarrollo_09000.png) · [Las mismas semillas a 12.500 pasos](estructura/empalme/desarrollo_12500.png) · [Medidas de reconstrucción](estructura/empalme/reconstruccion.json)
+El control anterior de la interfaz usa el paso **9.000** de la GAN jerárquica. En 102 especies apartadas, el ajuste hasta 12.500 mejoró el solapamiento medio al reconstruir siluetas del 88,4 % al 89,4 %. Al generar libremente con cuatro semillas fijadas antes de la comparación, perdió continuidad en algunos cuerpos, especialmente en Dragón. Se conservó el paso 9.000 por esa revisión visual. [Generación a 9.000 pasos](estructura/empalme/desarrollo_09000.png) · [Las mismas semillas a 12.500 pasos](estructura/empalme/desarrollo_12500.png) · [Medidas de reconstrucción](estructura/empalme/reconstruccion.json)
 
 **Referencias visuales que queremos conservar.** Para Fantasma puro, Ficha con las semillas 96553, 121211 y 121212 produce el manto, el farol y la máscara. Para Dragón, Lucha y Bicho/Veneno, usa Perfiles · 64 grupos con 318071. Con esa misma semilla, Pigmentos · 24 paletas da el insecto de alas azules y Detalle · +1.200 da la versión de alas extendidas. Las tres versiones se pueden seleccionar en la interfaz. Cada checkpoint admite otras semillas.
 
@@ -87,4 +93,16 @@ python ajustar_prior_jerarquico.py --output pesos/jerarquica.pth
 python train_empalme.py --steps 1500
 cp runs/empalme_color/modelo_01500.pth pesos/empalme.pth
 python evaluar_empalme.py
+```
+
+Para reproducir la continuación a partir de esos dos checkpoints completos, ejecuta los siguientes comandos. La evaluación necesita el dataset preparado y CUDA para buscar los vecinos de entrenamiento.
+
+```bash
+python train_jerarquica.py --steps 18000
+python ajustar_prior_jerarquico.py --metodo typed_convex --ema --output pesos/jerarquica_nueva.pth
+mkdir -p runs/empalme_union_final
+cp -n runs/empalme_color/checkpoint.pt runs/empalme_union_final/checkpoint.pt
+python train_empalme.py --union --run runs/empalme_union_final --steps 3600
+cp runs/empalme_union_final/modelo_03600.pth pesos/empalme_union.pth
+python evaluar_continuacion.py --gan pesos/jerarquica_nueva.pth --empalme pesos/empalme_union.pth
 ```

@@ -1,0 +1,34 @@
+[
+  {
+    "pasos": 9000,
+    "ema": false,
+    "especies": 102,
+    "IoU_silueta": 0.8835304379463196,
+    "error_RGB_figura": 0.20955891907215118,
+    "error_RGB_detalles": 0.16862088441848755
+  },
+  {
+    "pasos": 12500,
+    "ema": false,
+    "especies": 102,
+    "IoU_silueta": 0.8939732909202576,
+    "error_RGB_figura": 0.1909116506576538,
+    "error_RGB_detalles": 0.16430822014808655
+  },
+  {
+    "pasos": 15000,
+    "ema": false,
+    "especies": 102,
+    "IoU_silueta": 0.9046022295951843,
+    "error_RGB_figura": 0.18875683844089508,
+    "error_RGB_detalles": 0.15888622403144836
+  },
+  {
+    "pasos": 18000,
+    "ema": true,
+    "especies": 102,
+    "IoU_silueta": 0.9146947264671326,
+    "error_RGB_figura": 0.17379237711429596,
+    "error_RGB_detalles": 0.15421314537525177
+  }
+]

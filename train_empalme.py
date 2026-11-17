@@ -65,6 +65,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run",type=Path,default=Path("runs/empalme_color"))
     parser.add_argument("--steps",type=int,default=900)
+    parser.add_argument("--union",action="store_true",help="Ajusta los contornos y entrena sobre uniones desplazadas.")
     args=parser.parse_args()
     output=args.run
     output.mkdir(exist_ok=True,parents=True)
@@ -72,7 +73,7 @@ def main():
     rows=train_rows()
     torch.manual_seed(7801)
     heads,bodies=representatives(rows)
-    net=SpliceGenerator(len(heads),len(bodies)).cuda()
+    net=SpliceGenerator(len(heads),len(bodies),joined=args.union).cuda()
     ids,pal=quantize(data["images"])
     ids,pal=ids.cuda(),pal.cuda()
     pal=F.pad(pal,(0,0,1,0),value=1.)
@@ -95,6 +96,7 @@ def main():
     if state_file.exists():
         state=torch.load(state_file,map_location="cpu",weights_only=True)
         if state["data"]!=data["data"]: raise ValueError("Cambió la partición")
+        if state.get("joined",False) and not args.union: raise ValueError("Reanuda este checkpoint con --union")
         weights=state["generator"]
         for field in ("ink","ink_weights"):
             weights.setdefault(field,getattr(net,field))
@@ -105,7 +107,7 @@ def main():
         start=state["step"]
     def checkpoint(step):
         state=dict(architecture="paired_splice",generator=net.state_dict(),data=data["data"],step=step,
-                   heads=len(heads),bodies=len(bodies))
+                   heads=len(heads),bodies=len(bodies),joined=args.union)
         save(state,output/f"modelo_{step:05}.pth")
         save(dict(**state,discriminator=disc.state_dict(),opt=opt.state_dict(),dop=dop.state_dict()),state_file)
     if start==0:
@@ -150,6 +152,17 @@ def main():
         moved=target.gather(3,(xx+offset).clamp(0,SIZE-1))
         patch=torch.rand_like(band)<(.72*band)
         impaired=torch.where(patch,moved,target)
+        if args.union and step%4!=0:
+            # Paired intact sprites supply ground truth for repairing a jagged cut.
+            curve=F.interpolate(torch.randn(batch,1,1,8,device="cuda"),size=(1,SIZE),
+                                mode="bilinear",align_corners=True).clamp(-2,2)
+            signed=axis-mid-1.7*curve
+            band=(1-signed.abs()/7).clamp_min(0).expand_as(target)
+            dy=torch.randint(-2,3,(batch,2,1,1),device="cuda")
+            moved=moved.gather(2,(axis+dy).long().clamp(0,SIZE-1).expand_as(target))
+            tone=torch.randint(-2,3,(batch,1,1,1),device="cuda")
+            moved=torch.where((moved>1)&(moved<8),(moved+tone).clamp(2,7),moved)
+            impaired=torch.where((signed>0)&(band>.10),moved,target)
         rec=net.painter(impaired,band,y)
         errors=F.cross_entropy(rec.flatten(0,1),target.flatten(0,1),reduction="none").reshape_as(band)
         weight=band*(1+3*(target>0))
