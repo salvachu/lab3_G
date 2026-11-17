@@ -2,7 +2,7 @@
 
 Elige uno o dos tipos y pulsa **Generar criatura**. Cada clic sortea una semilla y muestra dos vistas descargables de 96 × 96 píxeles. Marca **Fijar semilla para comparar** si quieres recuperar una criatura o cambiar de modelo con la misma semilla. Escribir una semilla o seleccionar una criatura del historial también la fija. Para recuperar el ejemplar espectral de la sesión, elige Trazo, Fantasma y Psíquico y escribe 318071.
 
-![Cuatro semillas por tipo en Ficha diversa](estructura/diversa/semillas.png)
+![Sprites reales, modelos anteriores, GAN jerárquica, Empalme y referencia GPT a 96 px](estructura/empalme/comparacion.png)
 
 ## Abrir en Linux
 
@@ -21,6 +21,16 @@ python interfaz.py --cpu
 Abre [la interfaz local](http://127.0.0.1:7860) y mantén la terminal abierta. Para salir, pulsa Ctrl+C. Para abrirla otro día, desde la carpeta del proyecto ejecuta `.venv/bin/python interfaz.py --cpu`. En Debian o Ubuntu, si falta venv, el paquete se llama `python3-venv`.
 
 ## Modelos
+
+**GAN jerárquica** recibe una semilla y uno o dos tipos. Un generador convolucional dibuja ambos lados con una paleta común. Se entrenó desde cero con reconstrucción, un discriminador condicional y ruido a tres escalas. Para muestrear se ajustaron 256 grupos sobre representaciones del conjunto de entrenamiento. Cada centro combina seis especies distintas. La red genera los píxeles en la interfaz. Las siluetas cambian entre semillas, aunque a varias criaturas les faltan ojos legibles o un rasgo que identifique su tipo.
+
+**Empalme** reutiliza regiones de dos especies distintas del conjunto de entrenamiento. Alinea las regiones en ambas vistas y comparte los colores entre frente y espalda. Una red entrenada durante 1.500 pasos con reconstrucción y un discriminador retoca la unión. Este procedimiento conserva más detalles originales y a veces deja a la vista la especie que aportó la cabeza o el cuerpo. La lámina de procedencia muestra los dos sprites que contribuyeron a cada ejemplo.
+
+[Cuatro semillas de la GAN](estructura/empalme/jerarquica.png) · [Cuatro semillas de Empalme](estructura/empalme/semillas.png) · [Especies de origen de Empalme](estructura/empalme/origen.png) · [Pares más parecidos a los de entrenamiento](estructura/empalme/parecidos_train.png)
+
+[Comparación con AEGAN y el experimento Mosaico](estructura/empalme/modelos.png) · [Primeros nueve tipos](estructura/empalme/tipos_1.png) · [Otros nueve tipos](estructura/empalme/tipos_2.png) · [Resultados de las comprobaciones](estructura/empalme/evaluacion.json)
+
+En la interfaz se usa el paso **9.000** de la GAN jerárquica. En 102 especies apartadas, el ajuste hasta 12.500 mejoró el solapamiento medio al reconstruir siluetas del 88,4 % al 89,4 %. Al generar libremente con cuatro semillas fijadas antes de la comparación, perdió continuidad en algunos cuerpos, especialmente en Dragón. Se conservó el paso 9.000 por esa revisión visual. [Generación a 9.000 pasos](estructura/empalme/desarrollo_09000.png) · [Las mismas semillas a 12.500 pasos](estructura/empalme/desarrollo_12500.png) · [Medidas de reconstrucción](estructura/empalme/reconstruccion.json)
 
 **Referencias visuales que queremos conservar.** Para Fantasma puro, Ficha con las semillas 96553, 121211 y 121212 produce el manto, el farol y la máscara. Para Dragón, Lucha y Bicho/Veneno, usa Perfiles · 64 grupos con 318071. Con esa misma semilla, Pigmentos · 24 paletas da el insecto de alas azules y Detalle · +1.200 da la versión de alas extendidas. Las tres versiones se pueden seleccionar en la interfaz. Cada checkpoint admite otras semillas.
 
@@ -58,7 +68,7 @@ python sample_cycles.py pesos/ficha_todos.pth --types bug+poison water+dragon --
 
 ## Entrenamiento
 
-La colección del profesor se usa solo para entrenamiento y evaluación. Para continuar en un equipo con PyTorch y CUDA, coloca los originales `pairs.csv` e `images96.zip` en `dataset/`. Desde la raíz del proyecto:
+Para continuar en un equipo con PyTorch y CUDA, coloca los originales `pairs.csv` e `images96.zip` en `dataset/`. Desde la raíz del proyecto ejecuta estos comandos.
 
 ```bash
 python prepare.py
@@ -68,3 +78,13 @@ python train_ficha.py --run runs/ficha_todos --steps 2200
 El checkpoint de entrenamiento conserva los optimizadores y el discriminador. La preparación verifica los datos y la partición por especie antes de retomar.
 
 Para entrenar o reanudar el generador de anatomía con la colección preparada y las asignaciones de familia de TRAIN incluidas, ejecuta `python train_diversa.py --steps 2600`. Guarda el estado en `runs/diversa/checkpoint.pt` y exporta los pesos de inferencia a `pesos/diversa.pth`. Para repetir sus láminas usa `python evaluar_diversa.py`.
+
+Para repetir la GAN jerárquica y Empalme con la colección preparada, ejecuta lo siguiente. El entrenamiento guarda el estado para reanudar en la misma carpeta.
+
+```bash
+python train_jerarquica.py --steps 9000
+python ajustar_prior_jerarquico.py --output pesos/jerarquica.pth
+python train_empalme.py --steps 1500
+cp runs/empalme_color/modelo_01500.pth pesos/empalme.pth
+python evaluar_empalme.py
+```

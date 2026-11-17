@@ -40,7 +40,7 @@ def draw_board(path, headings, records, title, scale=2):
         y = 74+row*i
         label(8, y+29, NAMES[case], 13, True)
         if seed is not None:
-            label(8, y+48, f"z = {seed}", 12)
+            label(8, y+48, seed if isinstance(seed,str) else f"z = {seed}", 12)
         for j, sprite in enumerate(sprites):
             image.paste(sprite.resize((192*scale, 96*scale), Image.Resampling.NEAREST), ((margin+col*j)*scale, y*scale))
         pen.line((6*scale,(y+99)*scale,image.width-6*scale,(y+99)*scale),fill="#dce4e7",width=scale)

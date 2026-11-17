@@ -14,7 +14,16 @@ from type_generator import TypeGenerator
 def load_generator(path,device):
     state=torch.load(path,map_location="cpu",weights_only=True)
     relief_stages=("paired_relief","paired_lineage","paired_engraved","paired_elemental","paired_prisma","paired_insignias","paired_insignias_neck")
-    if state.get("architecture")=="paired_diverse":
+    if state.get("architecture")=="paired_hierarchical":
+        from sprite_jerarquica import HierarchicalGenerator
+        model=HierarchicalGenerator(state.get("components",0),state.get("prior_method","gaussian"))
+    elif state.get("architecture")=="paired_splice":
+        from sprite_empalme import SpliceGenerator
+        model=SpliceGenerator(state["heads"],state["bodies"])
+    elif state.get("architecture")=="paired_mosaic":
+        from sprite_mosaico import MosaicGenerator
+        model=MosaicGenerator()
+    elif state.get("architecture")=="paired_diverse":
         from sprite_diversa import DiverseGenerator
         model=DiverseGenerator()
     elif state.get("architecture")=="paired_trazo":

@@ -1,0 +1,292 @@
+{
+  "modelos_anteriores": {
+    "water": "ficha",
+    "dragon": "perfiles",
+    "fighting": "perfiles",
+    "fire": "ficha",
+    "electric": "ficha",
+    "ghost": "ficha",
+    "bug+poison": "ficha_todos",
+    "water+dragon": "ficha_todos"
+  },
+  "semillas": [
+    42001,
+    42002,
+    42003,
+    42004,
+    318071
+  ],
+  "condiciones_verificadas": 171,
+  "controles": {
+    "empalme": {
+      "raw_exact_views": 0,
+      "canonical_exact_views": 0,
+      "checks": 80
+    },
+    "jerarquica": {
+      "raw_exact_views": 0,
+      "canonical_exact_views": 0,
+      "checks": 80
+    }
+  },
+  "pixeles_modificados_en_union": 1034,
+  "origenes": [
+    {
+      "case": "water",
+      "seed": 42001,
+      "head": "5282cb02a76d7d9aef611253",
+      "body": "685838479ba5642f3082c15e"
+    },
+    {
+      "case": "water",
+      "seed": 42002,
+      "head": "3be8f8bd924030f8c5cd25c7",
+      "body": "7754b8fc901044003e002ed5"
+    },
+    {
+      "case": "water",
+      "seed": 42003,
+      "head": "3786726c46273dbb1e70e010",
+      "body": "02063fe852a40e8dc35c7e56"
+    },
+    {
+      "case": "water",
+      "seed": 42004,
+      "head": "3897da83c215a9086fa746ea",
+      "body": "f8ee9b4013df2c848bb4d18c"
+    },
+    {
+      "case": "water",
+      "seed": 318071,
+      "head": "8be620b891f94b4500030c14",
+      "body": "02063fe852a40e8dc35c7e56"
+    },
+    {
+      "case": "dragon",
+      "seed": 42001,
+      "head": "575b395618799ae222b82c8c",
+      "body": "a6f0651c868a13326aaa1b0f"
+    },
+    {
+      "case": "dragon",
+      "seed": 42002,
+      "head": "4698a20bf4de69cbf578137d",
+      "body": "2e2509c030632ac423ff3d4d"
+    },
+    {
+      "case": "dragon",
+      "seed": 42003,
+      "head": "561cc73689e463b74d41b340",
+      "body": "7ab52e7b581acbd61085120a"
+    },
+    {
+      "case": "dragon",
+      "seed": 42004,
+      "head": "9e51e41d63e680c00ba17c68",
+      "body": "b38919784f7b4eac0304f703"
+    },
+    {
+      "case": "dragon",
+      "seed": 318071,
+      "head": "291b490175dfda489b8170f0",
+      "body": "7ab52e7b581acbd61085120a"
+    },
+    {
+      "case": "fighting",
+      "seed": 42001,
+      "head": "3a6784b135a678c5906ad6fc",
+      "body": "a0988705b3a16446ac7dc296"
+    },
+    {
+      "case": "fighting",
+      "seed": 42002,
+      "head": "1f733bd49ce8abf12d48e97c",
+      "body": "5c8394f9ddf8a83d84229153"
+    },
+    {
+      "case": "fighting",
+      "seed": 42003,
+      "head": "88f7407794cdfdd5bc8c7536",
+      "body": "a0988705b3a16446ac7dc296"
+    },
+    {
+      "case": "fighting",
+      "seed": 42004,
+      "head": "5de3730423a5b969c66d97d9",
+      "body": "c190efe86dbd834e521e8f33"
+    },
+    {
+      "case": "fighting",
+      "seed": 318071,
+      "head": "b27d1e1b430493b4a6fcff92",
+      "body": "2b5c3cf9681a160813ad8f28"
+    },
+    {
+      "case": "fire",
+      "seed": 42001,
+      "head": "e14440901d1c0db045037422",
+      "body": "11206c7a001e32b27412713e"
+    },
+    {
+      "case": "fire",
+      "seed": 42002,
+      "head": "e84de6ec1e5a84d0d1da2d5b",
+      "body": "d960133a9b06567c19866111"
+    },
+    {
+      "case": "fire",
+      "seed": 42003,
+      "head": "b24fd520817b45d8c21c87d4",
+      "body": "86c304d35c946c7e3b99ed92"
+    },
+    {
+      "case": "fire",
+      "seed": 42004,
+      "head": "61858dfd659a0ef777fe4cc5",
+      "body": "b79cc97529c816c07dfb0262"
+    },
+    {
+      "case": "fire",
+      "seed": 318071,
+      "head": "240385aea69742b59f796990",
+      "body": "b79cc97529c816c07dfb0262"
+    },
+    {
+      "case": "electric",
+      "seed": 42001,
+      "head": "046605c0f12ecd232467bce4",
+      "body": "53911d99cd3e2a098bd02b47"
+    },
+    {
+      "case": "electric",
+      "seed": 42002,
+      "head": "c89d660d670c9653b573fcf3",
+      "body": "906c0fe5c7eab80298622321"
+    },
+    {
+      "case": "electric",
+      "seed": 42003,
+      "head": "c720e32b2229e408288eda06",
+      "body": "a1d361f74604ad15e2bdf78b"
+    },
+    {
+      "case": "electric",
+      "seed": 42004,
+      "head": "6b7d0f4154f16d94e0015203",
+      "body": "151d812b799f25a260563772"
+    },
+    {
+      "case": "electric",
+      "seed": 318071,
+      "head": "f184de7803dc6575d9a4ad9e",
+      "body": "8f2dab817481e884a8ca2be9"
+    },
+    {
+      "case": "ghost",
+      "seed": 42001,
+      "head": "9be1f354fd2d9e614bcf3411",
+      "body": "965e1c5ff9fdc4cd4455f56f"
+    },
+    {
+      "case": "ghost",
+      "seed": 42002,
+      "head": "b8254d4d8dd03b50c768df9f",
+      "body": "81a10aa3af3a22e131699163"
+    },
+    {
+      "case": "ghost",
+      "seed": 42003,
+      "head": "9373b8fa99ce3c8a860c9251",
+      "body": "08cce08097a46f50b3032238"
+    },
+    {
+      "case": "ghost",
+      "seed": 42004,
+      "head": "6df2d38186940c8e0f4f390f",
+      "body": "2a767d6662af48126f329eec"
+    },
+    {
+      "case": "ghost",
+      "seed": 318071,
+      "head": "80b72d0d89d007938ec6190c",
+      "body": "965e1c5ff9fdc4cd4455f56f"
+    },
+    {
+      "case": "bug+poison",
+      "seed": 42001,
+      "head": "5c5df17387646cf22c9ba0f2",
+      "body": "e7ec3d54ca8be737a2b2f1b6"
+    },
+    {
+      "case": "bug+poison",
+      "seed": 42002,
+      "head": "0b663dadcb2a302029ca4717",
+      "body": "a8e8fe650fec7062e5130656"
+    },
+    {
+      "case": "bug+poison",
+      "seed": 42003,
+      "head": "51d931a3b04b447a3ce5acf9",
+      "body": "8665b4dfb779580d86e30921"
+    },
+    {
+      "case": "bug+poison",
+      "seed": 42004,
+      "head": "7ac7a5cb7be74cec170cc169",
+      "body": "7fef947676874343845a75b5"
+    },
+    {
+      "case": "bug+poison",
+      "seed": 318071,
+      "head": "5d6a63a64a1c36c694755408",
+      "body": "db2fa905dcafa0c8782f3466"
+    },
+    {
+      "case": "water+dragon",
+      "seed": 42001,
+      "head": "d89c09781d2c6f03fef1d933",
+      "body": "7cfe05ffe5990e242574c515"
+    },
+    {
+      "case": "water+dragon",
+      "seed": 42002,
+      "head": "6d296eafc3e017060b809801",
+      "body": "ef1774bff5e984b098ae8be1"
+    },
+    {
+      "case": "water+dragon",
+      "seed": 42003,
+      "head": "c118d3d0be00c7914630b7bd",
+      "body": "7ab52e7b581acbd61085120a"
+    },
+    {
+      "case": "water+dragon",
+      "seed": 42004,
+      "head": "902a63698835f159634043e4",
+      "body": "b38919784f7b4eac0304f703"
+    },
+    {
+      "case": "water+dragon",
+      "seed": 318071,
+      "head": "291b490175dfda489b8170f0",
+      "body": "7754b8fc901044003e002ed5"
+    }
+  ],
+  "paso_gan": 9000,
+  "vecinos": {
+    "especies_validacion": 102,
+    "p05_validacion": 0.1931806169450283,
+    "modelos": {
+      "jerarquica": {
+        "pares": 40,
+        "por_debajo_p05_validacion": 27,
+        "distancia_mediana": 0.17182786762714386
+      },
+      "empalme": {
+        "pares": 40,
+        "por_debajo_p05_validacion": 14,
+        "distancia_mediana": 0.20726202428340912
+      }
+    }
+  }
+}

@@ -19,7 +19,7 @@ ROOT=Path(__file__).resolve().parent
 NOMBRES="Normal Lucha Volador Veneno Tierra Roca Bicho Fantasma Acero Fuego Agua Planta Eléctrico Psíquico Hielo Dragón Siniestro Hada".split()
 WEIGHTS={"ficha":ROOT/"pesos"/"ficha.pth","cuerpos":ROOT/"pesos"/"ficha_todos.pth","trazo":ROOT/"pesos"/"trazo.pth"}
 WEIGHTS["diversa"]=ROOT/"pesos"/"diversa.pth"
-for name in ("detalle", "perfiles", "pigmentos"):
+for name in ("detalle", "perfiles", "pigmentos", "empalme", "jerarquica"):
     WEIGHTS[name] = ROOT/"pesos"/f"{name}.pth"
 
 

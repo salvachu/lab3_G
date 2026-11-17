@@ -1,0 +1,16 @@
+[
+  {
+    "pasos": 9000,
+    "especies": 102,
+    "IoU_silueta": 0.8835304379463196,
+    "error_RGB_figura": 0.20955891907215118,
+    "error_RGB_detalles": 0.16862088441848755
+  },
+  {
+    "pasos": 12500,
+    "especies": 102,
+    "IoU_silueta": 0.8939732909202576,
+    "error_RGB_figura": 0.1909116506576538,
+    "error_RGB_detalles": 0.16430822014808655
+  }
+]
